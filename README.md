@@ -13,17 +13,11 @@ class Node
 end
 ```
 
-Our nodes may have one or two children, or none! Hmm.. This might come in useful:
-```ruby
-def has_children?
-  @left || @right
-end
-```
+Our nodes may have one or two children, or none!
 Okay so far, but we're missing something...
 
-..Enter Binary Search Tree. This pulls the node fam together. Now the nodes can finally have relationships and children.
+Enter Binary Search Tree. This pulls the node fam together. Now the nodes can finally have relationships and children.
 
-Our first node into the tree becomes our root.
 
 ```ruby
 class BinarySearchTree
@@ -34,3 +28,5 @@ class BinarySearchTree
   end
 end
 ```
+
+Our first node into the tree becomes our root.
