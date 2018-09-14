@@ -3,8 +3,8 @@ require_relative 'node'
 class BinarySearchTree
   attr_accessor :root
 
-  def initialize
-    @root = nil
+  def initialize(value = nil)
+    @root = value ? Node.new(value) : nil
   end
 
   def insert(value)
@@ -32,6 +32,15 @@ class BinarySearchTree
     maximum(tree_node.right)
   end
 
+  def parent_of_max(tree_node)
+    return nil unless tree_node
+    if tree_node.right && tree_node.right.right
+      parent_of_max(tree_node.right)
+    elsif tree_node.right
+      tree_node
+    end
+  end
+
   def in_order(node = @root)
     return [] unless node
     in_order(node.left) + [node.value] + in_order(node.right)
@@ -50,6 +59,7 @@ class BinarySearchTree
   end
 
   def delete_node(tree_node, value)
+    return nil unless tree_node
     case value <=> tree_node.value
     when -1
       tree_node.left = delete_node(tree_node.left, value)
@@ -65,37 +75,33 @@ class BinarySearchTree
     if tree_node.has_children?
       return tree_node.left unless tree_node.right
       return tree_node.right unless tree_node.left
-      replacement = maximum(tree_node.left)
 
-      if replacement.left && tree_node.left.right
-        parent, child = tree_node.left, tree_node.left.right
-        parent, child = parent.right, child.right while child.right
-        parent.right = child.left
+      max_parent = parent_of_max(tree_node.left)
+
+      if max_parent.nil?
+        replacement = tree_node.left
+      else
+        replacement = max_parent.right
+        max_parent.right = replacement.left ? replacement.left : nil
+        replacement.left = tree_node.left
       end
 
-      replacement.left = tree_node.left
       replacement.right = tree_node.right
       replacement
     end
   end
 end
 
-# parent = tree_node.left
-# child = tree_node.left.right
-#
-# while child.right
-#   parent = parent.right
-#   child = child.right
-# end
 
-#############################
-#             (5)           #
-#            /   \          #
-#          (3)   (7)        #
-#         /  \      \       #
-#      (1)   (4)    (9)     #
-#     /   \            \    #
-#   (0)   (2)          (10) #
-#        /                  #
-#      (1.5)                #
-#############################
+
+# replacement = maximum(tree_node.left)
+#
+# if replacement.left && tree_node.left.right
+#   parent, child = tree_node.left, tree_node.left.right
+#   parent, child = parent.right, child.right while child.right
+#   parent.right = child.left
+# end
+#
+# replacement.left = tree_node.left
+# replacement.right = tree_node.right
+# replacement
