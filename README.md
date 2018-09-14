@@ -81,8 +81,17 @@ def find(value, tree_node = @root)
 end
 ```
 
-Now the tricky part. Deleting nodes.
+Now the tricky part. Deleting nodes. There are several cases that need to be considered in order to remove the target node from the tree.
+1. The node has no children
+  - No children to promote, simply remove the target node
+2. The node has 1 child
+  - Promote the child to replace the target node
+3. The node has 2 children
+  - a) Find the maximum node of the target's left child.
+  - b) If the maximum has a left child, promote it to replace maximum
+  - c) Replace target with maximum, reassign target pointers as needed
 
+Our deletion will consist of a few methods. Let's take a look.
 
 ```ruby
 def delete(value)
@@ -132,8 +141,8 @@ def parent_of_max(tree_node)
   end
 end
 ```
+What's happening here? Let's walk through each method.
 
-In-depth look at `replace_node`
 ```ruby
 def replace_node(tree_node)
   # if the node has children we'll enter the if block,
@@ -184,6 +193,7 @@ def parent_of_max(tree_node)
     # have it's own right child, we've found the parent.
     tree_node
   end
-  # if the node has no right, we skip the if block and nil is returned
+  # if the node has no right, we skip the if block and nil is returned.
+  # in our use cases, nil means the node we're inspecting is the max.
 end
 ```
