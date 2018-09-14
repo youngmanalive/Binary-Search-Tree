@@ -32,15 +32,6 @@ class BinarySearchTree
     maximum(tree_node.right)
   end
 
-  def parent_of_max(tree_node)
-    return nil unless tree_node
-    if tree_node.right && tree_node.right.right
-      parent_of_max(tree_node.right)
-    elsif tree_node.right
-      tree_node
-    end
-  end
-
   def in_order(node = @root)
     return [] unless node
     in_order(node.left) + [node.value] + in_order(node.right)
@@ -88,6 +79,14 @@ class BinarySearchTree
 
       replacement.right = tree_node.right
       replacement
+    end
+  end
+
+  def parent_of_max(tree_node)
+    if tree_node.right && tree_node.right.right
+      parent_of_max(tree_node.right)
+    elsif tree_node.right
+      tree_node
     end
   end
 end

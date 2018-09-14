@@ -79,3 +79,63 @@ def find(value, tree_node = @root)
   end
 end
 ```
+
+### delete
+
+
+```ruby
+def delete(value)
+  @root = delete_node(@root, value)
+end
+
+private
+
+def delete_node(tree_node, value)
+  return nil unless tree_node
+  case value <=> tree_node.value
+  when -1
+    tree_node.left = delete_node(tree_node.left, value)
+  when 0
+    tree_node = replace_node(tree_node)
+  when 1
+    tree_node.right = delete_node(tree_node.right, value)
+  end
+  tree_node
+end
+
+def replace_node(tree_node)
+  # if the node has children we'll enter the if block,
+  # else the function returns nil
+  if tree_node.has_children?
+    # left child but no right
+    return tree_node.left unless tree_node.right
+    # right child but no left
+    return tree_node.right unless tree_node.left
+
+    # find the parent of the maximum node in the node's left subtree
+    max_parent = parent_of_max(tree_node.left)
+
+    if max_parent.nil?
+      # if the max_parent is nil, we know that our target node's left
+      # does not have a right child, making it the max.
+      # this becomes our replacement
+      replacement = tree_node.left
+    else
+      replacement = max_parent.right
+      max_parent.right = replacement.left ? replacement.left : nil
+      replacement.left = tree_node.left
+    end
+
+    replacement.right = tree_node.right
+    replacement
+  end
+end
+
+def parent_of_max(tree_node)
+  if tree_node.right && tree_node.right.right
+    parent_of_max(tree_node.right)
+  elsif tree_node.right
+    tree_node
+  end
+end
+```
