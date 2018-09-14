@@ -90,17 +90,3 @@ class BinarySearchTree
     end
   end
 end
-
-
-
-# replacement = maximum(tree_node.left)
-#
-# if replacement.left && tree_node.left.right
-#   parent, child = tree_node.left, tree_node.left.right
-#   parent, child = parent.right, child.right while child.right
-#   parent.right = child.left
-# end
-#
-# replacement.left = tree_node.left
-# replacement.right = tree_node.right
-# replacement
