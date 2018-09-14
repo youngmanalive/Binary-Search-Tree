@@ -82,14 +82,14 @@ end
 ```
 
 Now the tricky part. Deleting nodes. There are several cases that need to be considered in order to remove the target node from the tree.
-1. The node has no children
-  - No children to promote, simply remove the target node
-2. The node has 1 child
-  - Promote the child to replace the target node
-3. The node has 2 children
-  - a) Find the maximum node of the target's left child.
-  - b) If the maximum has a left child, promote it to replace maximum
-  - c) Replace target with maximum, reassign target pointers as needed
+1. **The node has no children**
+    - No children to promote, simply remove the target node
+2. **The node has 1 child**
+    - Promote the child to replace the target node
+3. **The node has 2 children**
+    - a) Find the maximum node of the target's left child.
+    - b) If the maximum has a left child, promote it to replace the maximum
+    - c) Replace target with maximum, reassign maximum's pointers to target pointers
 
 Our deletion will consist of a few methods. Let's take a look.
 
