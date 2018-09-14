@@ -3,7 +3,8 @@
 We'll start with nodes. Each has a value, left, and right. Simple.
 ```ruby
 class Node
-  attr_accessor :value, :left, :right
+  attr_reader :value
+  attr_accessor :left, :right
 
   def initialize(value)
     @value = value
@@ -23,13 +24,13 @@ Enter Binary Search Tree. This pulls the node fam together. Now the nodes can fi
 class BinarySearchTree
   attr_accessor :root
 
-  def initialize
-    @root = nil
+  def initialize(value = nil)
+    @root = value ? Node.new(value) : nil
   end
 end
 ```
-
-Our first node into the tree becomes our root. We'll need a way to handle our node insertion. `insert(value)` will start the process.
+We can start our tree off with a root node, or initialize it as nil.
+`insert(value)` will handle our node insertion.
 
 ```ruby
 # Assign our root to the return value of insert_node(tree_node, value)
@@ -80,7 +81,7 @@ def find(value, tree_node = @root)
 end
 ```
 
-### delete
+Now the tricky part. Deleting nodes.
 
 
 ```ruby
@@ -104,25 +105,17 @@ def delete_node(tree_node, value)
 end
 
 def replace_node(tree_node)
-  # if the node has children we'll enter the if block,
-  # else the function returns nil
   if tree_node.has_children?
-    # left child but no right
     return tree_node.left unless tree_node.right
-    # right child but no left
     return tree_node.right unless tree_node.left
 
-    # find the parent of the maximum node in the node's left subtree
     max_parent = parent_of_max(tree_node.left)
 
     if max_parent.nil?
-      # if the max_parent is nil, we know that our target node's left
-      # does not have a right child, making it the max.
-      # this becomes our replacement
       replacement = tree_node.left
     else
       replacement = max_parent.right
-      max_parent.right = replacement.left ? replacement.left : nil
+      max_parent.right = replacement.left
       replacement.left = tree_node.left
     end
 
@@ -137,5 +130,60 @@ def parent_of_max(tree_node)
   elsif tree_node.right
     tree_node
   end
+end
+```
+
+In-depth look at `replace_node`
+```ruby
+def replace_node(tree_node)
+  # if the node has children we'll enter the if block,
+  # else the function returns nil -- no children to promote!
+  if tree_node.has_children?
+
+    # promote the left child if there is no right child
+    return tree_node.left unless tree_node.right
+    # promote the right child if there is no left child
+    return tree_node.right unless tree_node.left
+
+    # if we've made it this far, our tree_node has 2 children.
+    # we need to replace the tree_node with the maximum node
+    # on the left subtree. let's find the parent of this max.
+    # if we know the parent, we know the max.
+    max_parent = parent_of_max(tree_node.left)
+
+    if max_parent.nil?
+      # if the max_parent is nil, we know that our target node's left
+      # does not have a right child, making it the max.
+      # this becomes our replacement
+      replacement = tree_node.left
+    else
+      # max_parent is defined - our replacement is max_parent's right
+      replacement = max_parent.right
+
+      # repoint max_parent's right to the replacement's left.
+      max_parent.right = replacement.left
+
+      # replacement's left becomes the target node's left
+      replacement.left = tree_node.left
+    end
+
+    # now assign replacement's right to our target node's right.
+    replacement.right = tree_node.right
+
+    # all done, return the replacement
+    replacement
+  end
+end
+
+def parent_of_max(tree_node)
+  if tree_node.right && tree_node.right.right
+    # if the node has a right, and that right also has a right.. recurse!
+    parent_of_max(tree_node.right)
+  elsif tree_node.right
+    # when the current node's right child does not
+    # have it's own right child, we've found the parent.
+    tree_node
+  end
+  # if the node has no right, we skip the if block and nil is returned
 end
 ```

@@ -73,7 +73,7 @@ class BinarySearchTree
         replacement = tree_node.left
       else
         replacement = max_parent.right
-        max_parent.right = replacement.left ? replacement.left : nil
+        max_parent.right = replacement.left
         replacement.left = tree_node.left
       end
 
