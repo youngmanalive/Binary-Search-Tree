@@ -143,15 +143,19 @@ end
 ```
 What's happening here? Let's walk through each method.
 
-`delete(value)` and `delete_node(tree_node, value)`
+#### `delete(value)`
+This kicks things off by starting at the root.
+
 ```ruby
 # Assign our root the the return value of delete_node
 def delete(value)
   @root = delete_node(@root, value)
 end
+```
+#### `delete_node(tree_node, value)`
+We'll essentially reassign every node we traverse. Compare the value with the current node. If the node's value is not our target, assign the node's left or right child with a recursive call. Repeat until the target node is found, replace as necessary and return the replacement. Each evaluated node will be also be returned up the chain until we finally return the root.
 
-private
-
+```ruby
 def delete_node(tree_node, value)
   # node does not exist, return nil
   return nil unless tree_node
@@ -174,7 +178,8 @@ def delete_node(tree_node, value)
 end
 ```
 
-Once our target node has been located, we'll assign it the return value of `replace_node(tree_node)`
+#### `replace_node(tree_node)`
+This will handle the logic of actually replacing the node. If the node has children we have some extra steps to fulfill. Otherwise we return nil since there are no children needing promotion.
 
 ```ruby
 def replace_node(tree_node)
@@ -216,7 +221,11 @@ def replace_node(tree_node)
     replacement
   end
 end
+```
+#### `parent_of_max(tree_node)`
+Find the parent of the node with the highest value. The parent's right child will be the maximum. Using this allows us to yank the maximum out, and reassign the parent's right to the maximum's left. The maximum's left may be nil or a node itself. Either way, we are repairing the broken link after pulling the max out. If we were to call this method on a node without a right child, nil is returned, indicating that the node *is* the maximum, so the parent is unknown.
 
+```ruby
 def parent_of_max(tree_node)
   if tree_node.right && tree_node.right.right
     # if the node has a right, and that right also has a right.. recurse!
@@ -230,3 +239,5 @@ def parent_of_max(tree_node)
   # in our use cases, nil means the node we're inspecting is the max.
 end
 ```
+
+More methods to come!
