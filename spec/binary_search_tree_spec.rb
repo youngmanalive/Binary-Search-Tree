@@ -136,23 +136,35 @@ describe BinarySearchTree do
 
     context "more tests" do
       it "passes all test cases" do
-        vals = [15, 13, 17, 12, 14, 12.5, 3, 1, 5, 0, 9, 7, 6, 8]
+        vals = [15, 13, 17, 11, 14, 19, 3, 12, 25,
+                1, 5, 22, 28, 0, 9, 23, 7, 6, 8]
         vals.each { |val| tree.insert(val) }
 
-        tree.delete(12.5)
-        expect(tree.root.left.left.value).to eq(12)
+        tree.delete(12)
+        expect(tree.root.left.left.value).to eq(11)
         expect(tree.root.left.left.right).to be_nil
 
         tree.delete(13)
-        expect(tree.root.left.value).to eq(12)
+        expect(tree.root.left.value).to eq(11)
         expect(tree.root.left.right.value).to eq(14)
 
-        tree.delete(12)
+        tree.delete(11)
         expect(tree.root.left.value).to eq(9)
         expect(tree.root.left.right.value).to eq(14)
         expect(tree.root.left.left.right.right.value).to eq(7)
         expect(tree.root.left.left.right.right.right.value).to eq(8)
         expect(tree.root.left.left.right.right.left.value).to eq(6)
+
+        tree.delete(15)
+        expect(tree.root.value).to eq(14)
+        expect(tree.root.left.value).to eq(9)
+        expect(tree.root.left.right).to be_nil
+        expect(tree.root.right.value).to eq(17)
+
+        tree.delete(25)
+        expect(tree.root.right.right.right.value).to eq(23)
+        expect(tree.root.right.right.right.left.value).to eq(22)
+        expect(tree.root.right.right.right.left.right).to be_nil
 
         # in_order = [0, 1, 3, 5, 6, 7, 8, 9, 14, 15, 17]
         # expect(tree.in_order).to eq(in_order)
@@ -160,3 +172,20 @@ describe BinarySearchTree do
     end
   end
 end
+
+#                            15
+#                          /   \
+#                        13    17
+#                       /  \    \
+#                     11   14    19
+#                    /  \         \
+#                   3   12        25
+#                 /  \           /  \
+#                1    5        22   28
+#               /      \        \
+#              0        9       23
+#                      /
+#                     7
+#                   /  \
+#                  6    8
+#
