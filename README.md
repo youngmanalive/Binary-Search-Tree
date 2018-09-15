@@ -60,7 +60,7 @@ def insert_node(tree_node, value)
 end
 ```
 
-Peachy. But let's say we want to find a node? We'll start with our target value and compare a starting node. If the value is less than node, we'll move on to the node's left. If the value is greater, than we'll move onto the node's right. If our value is equal to the node, bingo - we've found it. If we attempt to move to a nil node, we'll know our value is not in the tree.
+Peachy. But let's say we want to find a node? We'll start with our target value and compare a starting node. If the value is less than node, we'll move on to the node's left. If the value is greater, then we'll move onto the node's right. If our value is equal to the current node's value, bingo - we've found it. If we attempt to move to a nil node, we'll know our value is not in the tree.
 
 ```ruby
 def find(value, tree_node = @root)
@@ -87,7 +87,7 @@ Now the tricky part. Deleting nodes. There are several cases that need to be con
 2. **The node has 1 child**
     - Promote the child to replace the target node
 3. **The node has 2 children**
-    - a) Find the maximum node of the target's left child.
+    - a) Find the maximum node of the target's left subtree.
     - b) If the maximum has a left child, promote it to replace the maximum
     - c) Replace target with maximum, reassign maximum's pointers to target pointers
 
@@ -142,6 +142,39 @@ def parent_of_max(tree_node)
 end
 ```
 What's happening here? Let's walk through each method.
+
+`delete(value)` and `delete_node(tree_node, value)`
+```ruby
+# Assign our root the the return value of delete_node
+def delete(value)
+  @root = delete_node(@root, value)
+end
+
+private
+
+def delete_node(tree_node, value)
+  # node does not exist, return nil
+  return nil unless tree_node
+
+  # begin evaluation
+  case value <=> tree_node.value
+  when -1
+    # value is less than tree_node, recursive call on the target's left
+    tree_node.left = delete_node(tree_node.left, value)
+  when 0
+    # we found the target, call replace_node to begin deletion steps
+    tree_node = replace_node(tree_node)
+  when 1
+    # value is greater than tree, recursive call on the target's right
+    tree_node.right = delete_node(tree_node.right, value)
+  end
+
+  # return the node
+  tree_node
+end
+```
+
+Once our target node has been located, we'll assign it the return value of `replace_node(tree_node)`
 
 ```ruby
 def replace_node(tree_node)
