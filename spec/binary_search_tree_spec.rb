@@ -79,7 +79,7 @@ describe BinarySearchTree do
   end
 
   describe "#find" do
-    it "returns nil if node does not exit in tree" do
+    it "returns nil if node does not exist in tree" do
       expect(filled_tree.find(1.5)).to eq(nil)
     end
 
@@ -91,7 +91,7 @@ describe BinarySearchTree do
   end
 
   describe "#delete" do
-    it "returns nil if node does not exsit in tree" do
+    it "returns nil if node does not exist in tree" do
       expect(tree.delete(50)).to eq(nil)
     end
 
@@ -107,7 +107,7 @@ describe BinarySearchTree do
       expect(filled_tree.root.left.left.right.left.left).to be_nil
 
       filled_tree.delete(14)
-      expect(filled_tree.root.right.right)
+      expect(filled_tree.root.right.right.right).to be_nil
     end
 
     it "removes a node with one child and promotes the child" do
