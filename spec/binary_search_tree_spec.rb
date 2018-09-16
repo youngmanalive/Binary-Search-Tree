@@ -140,6 +140,23 @@ describe BinarySearchTree do
                 1, 5, 22, 28, 0, 9, 23, 7, 6, 8]
         vals.each { |val| tree.insert(val) }
 
+        #                            15
+        #                          /   \
+        #                        13    17
+        #                       /  \    \
+        #                     11   14    19
+        #                    /  \         \
+        #                   3   12        25
+        #                 /  \           /  \
+        #                1    5        22   28
+        #               /      \        \
+        #              0        9       23
+        #                      /
+        #                     7
+        #                   /  \
+        #                  6    8
+        #
+
         tree.delete(12)
         expect(tree.root.left.left.value).to eq(11)
         expect(tree.root.left.left.right).to be_nil
@@ -171,21 +188,41 @@ describe BinarySearchTree do
       end
     end
   end
-end
 
-#                            15
-#                          /   \
-#                        13    17
-#                       /  \    \
-#                     11   14    19
-#                    /  \         \
-#                   3   12        25
-#                 /  \           /  \
-#                1    5        22   28
-#               /      \        \
-#              0        9       23
-#                      /
-#                     7
-#                   /  \
-#                  6    8
-#
+  describe "#maximum" do
+    it "finds the highest valued node in the tree" do
+      expect(filled_tree.maximum.value).to eq(14)
+    end
+  end
+
+  describe "#minimum" do
+    it "finds the lowest valued node in the tree" do
+      expect(filled_tree.minimum.value).to eq(0)
+    end
+  end
+
+  describe "#depth" do
+    it "returns the depth count of the tree or input node" do
+      expect(filled_tree.depth).to eq(5)
+      expect(filled_tree.depth(filled_tree.root.right)).to eq(2)
+    end
+  end
+
+  describe "#is_balnaced?" do
+    it "returns false if the tree is unbalanced" do
+      expect(filled_tree.is_balanced?).to eq(false)
+    end
+
+    it "returns true if the all nodes are balanced" do
+      [4, 2, 5, 1, 3, 6].each { |val| tree.insert(val) }
+      expect(tree.is_balanced?).to eq(true)
+    end
+  end
+
+  describe "#in_order" do
+    it "returns an array of all nodes in ascending order" do
+      result = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 14]
+      expect(filled_tree.in_order).to eq(result)
+    end
+  end
+end
