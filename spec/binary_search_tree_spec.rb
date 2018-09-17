@@ -5,15 +5,17 @@ require 'node'
 describe Node do
   let(:node) { Node.new(10) }
 
-  it "initializes with a value" do
-    expect(node.value).to eq(10)
-  end
+  describe "#initialize" do
+    it "initializes with a value" do
+      expect(node.value).to eq(10)
+    end
 
-  it "has a left and right that can be assigned" do
-    node.left = 8
-    node.right = 12
-    expect(node.left).to eq(8)
-    expect(node.right).to eq(12)
+    it "has a left and right that can be assigned" do
+      node.left = 8
+      node.right = 12
+      expect(node.left).to eq(8)
+      expect(node.right).to eq(12)
+    end
   end
 
   describe "#has_children?" do
@@ -134,8 +136,8 @@ describe BinarySearchTree do
       end
     end
 
-    context "more tests" do
-      it "passes all test cases" do
+    context "when multiple nodes are deleted" do
+      it "properly removes/promotes nodes" do
         vals = [15, 13, 17, 11, 14, 19, 3, 12, 25,
                 1, 5, 22, 28, 0, 9, 23, 7, 6, 8]
         vals.each { |val| tree.insert(val) }
@@ -182,9 +184,6 @@ describe BinarySearchTree do
         expect(tree.root.right.right.right.value).to eq(23)
         expect(tree.root.right.right.right.left.value).to eq(22)
         expect(tree.root.right.right.right.left.right).to be_nil
-
-        # in_order = [0, 1, 3, 5, 6, 7, 8, 9, 14, 15, 17]
-        # expect(tree.in_order).to eq(in_order)
       end
     end
   end
@@ -208,7 +207,7 @@ describe BinarySearchTree do
     end
   end
 
-  describe "#is_balnaced?" do
+  describe "#is_balanced?" do
     it "returns false if the tree is unbalanced" do
       expect(filled_tree.is_balanced?).to eq(false)
     end
@@ -219,10 +218,20 @@ describe BinarySearchTree do
     end
   end
 
-  describe "#in_order" do
-    it "returns an array of all nodes in ascending order" do
+  describe "traversal methods" do
+    it "returns correct order using #in_order" do
       result = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 14]
       expect(filled_tree.in_order).to eq(result)
+    end
+
+    it "returns correct order using #pre_order" do
+      result = [8, 6, 1, 0, 5, 3, 2, 4, 7, 10, 13, 14]
+      expect(filled_tree.pre_order).to eq(result)
+    end
+
+    it "returns correct order using #post_order" do
+      result = [0, 2, 4, 3, 5, 1, 7, 6, 14, 13, 10, 8]
+      expect(filled_tree.post_order).to eq(result)
     end
   end
 end
