@@ -167,13 +167,13 @@ def delete_node(tree_node, value)
   # begin evaluation
   case value <=> tree_node.value
   when -1
-    # value is less than tree_node, recursive call on the node's left
+    # value is less than current node, recursive call on the node's left
     tree_node.left = delete_node(tree_node.left, value)
   when 0
     # we found the target, call replace_node to begin deletion steps
     tree_node = replace_node(tree_node)
   when 1
-    # value is greater than tree, recursive call on the node's right
+    # value is greater than current node, recursive call on the node's right
     tree_node.right = delete_node(tree_node.right, value)
   end
 
