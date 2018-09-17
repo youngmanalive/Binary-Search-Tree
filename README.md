@@ -243,3 +243,64 @@ def parent_of_max(tree_node)
   # in our use cases, nil means the node we're inspecting is the max.
 end
 ```
+
+Whew. Now that we have the fundamentals down, let's move on to some other useful functions to evaluate our binary search tree.
+
+#### Finding the depth
+```ruby
+def depth(tree_node = @root)
+  return 0 unless tree_node
+  left = tree_node.left ? 1 + depth(tree_node.left) : 0
+  right = tree_node.right ? 1 + depth(tree_node.right) : 0
+  left > right ? left : right
+end
+```
+#### Checking for balance
+```ruby
+def is_balanced?(tree_node = @root)
+  check_balance(tree_node) >= 0
+end
+
+private
+
+def check_balance(tree_node)
+  return 0 unless tree_node
+
+  left = check_balance(tree_node.left)
+  return -1 if left == -1
+
+  right = check_balance(tree_node.right)
+  return -1 if right == -1 || (left - right).abs > 1
+
+  (left > right ? left : right) + 1
+end
+```
+
+#### Maximum and minimum
+```ruby
+def maximum(tree_node = @root)
+  tree_node.right ? maximum(tree_node.right) : tree_node
+end
+
+def minimum(tree_node = @root)
+  tree_node.left ? maximum(tree_node.left) : tree_node
+end
+```
+
+#### Traversal methods
+```ruby
+def in_order(node = @root)
+  return [] unless node
+  in_order(node.left) + [node.value] + in_order(node.right)
+end
+
+def pre_order(node = @root)
+  return [] unless node
+  [node.value] + pre_order(node.left) + pre_order(node.right)
+end
+
+def post_order(node = @root)
+  return [] unless node
+  post_order(node.left) + post_order(node.right) + [node.value]
+end
+```
