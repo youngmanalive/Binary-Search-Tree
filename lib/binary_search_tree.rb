@@ -52,6 +52,16 @@ class BinarySearchTree
     in_order(node.left) + [node.value] + in_order(node.right)
   end
 
+  def pre_order(node = @root)
+    return [] unless node
+    [node.value] + pre_order(node.left) + pre_order(node.right)
+  end
+
+  def post_order(node = @root)
+    return [] unless node
+    post_order(node.left) + post_order(node.right) + [node.value]
+  end
+
   private
 
   def insert_node(tree_node, value)
