@@ -14,11 +14,15 @@ class Node
 end
 ```
 
-Our nodes may have one or two children, or none!
+Our nodes may have one or two children, or none! This will come in handy:
+```ruby
+def has_children?
+  !!(@left || @right)
+end
+```
 Okay so far, but we're missing something...
 
-Enter Binary Search Tree. This pulls the node fam together. Now the nodes can finally have relationships and children.
-
+Enter Binary Search Tree. This pulls the node fam together.
 
 ```ruby
 class BinarySearchTree
@@ -239,5 +243,3 @@ def parent_of_max(tree_node)
   # in our use cases, nil means the node we're inspecting is the max.
 end
 ```
-
-More methods to come!
