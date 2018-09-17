@@ -247,6 +247,7 @@ end
 Whew. Now that we have the fundamentals down, let's move on to some other useful functions to evaluate our binary search tree.
 
 #### Finding the depth
+Return the current max depth of the tree.
 ```ruby
 def depth(tree_node = @root)
   return 0 unless tree_node
@@ -256,6 +257,7 @@ def depth(tree_node = @root)
 end
 ```
 #### Checking for balance
+Determine if the tree's nodes are balanced.
 ```ruby
 def is_balanced?(tree_node = @root)
   check_balance(tree_node) >= 0
@@ -277,6 +279,7 @@ end
 ```
 
 #### Maximum and minimum
+Find the highest and lowest values
 ```ruby
 def maximum(tree_node = @root)
   tree_node.right ? maximum(tree_node.right) : tree_node
@@ -288,6 +291,7 @@ end
 ```
 
 #### Traversal methods
+Return an array with values in the specified order
 ```ruby
 def in_order(node = @root)
   return [] unless node
