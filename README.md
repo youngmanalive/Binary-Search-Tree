@@ -1,6 +1,7 @@
 ## Binary Search Tree
 
 We'll start with nodes. Each has a value, left, and right. Simple.
+
 ```ruby
 class Node
   attr_reader :value
@@ -15,11 +16,13 @@ end
 ```
 
 Our nodes may have one or two children, or none! This will come in handy:
+
 ```ruby
 def has_children?
   !!(@left || @right)
 end
 ```
+
 Okay so far, but we're missing something...
 
 Enter Binary Search Tree. This pulls the node fam together.
@@ -33,6 +36,7 @@ class BinarySearchTree
   end
 end
 ```
+
 We can start our tree off with a root node, or initialize it as nil.
 `insert(value)` will handle our node insertion.
 
@@ -86,6 +90,7 @@ end
 ```
 
 Now the tricky part. Deleting nodes. There are several cases that need to be considered in order to remove the target node from the tree.
+
 1. **The node has no children**
     - No children to promote, simply remove the target node
 2. **The node has 1 child**
@@ -145,9 +150,11 @@ def parent_of_max(tree_node)
   end
 end
 ```
+
 What's happening here? Let's walk through each method.
 
 #### `delete(value)`
+
 This kicks things off by starting at the root.
 
 ```ruby
@@ -156,7 +163,9 @@ def delete(value)
   @root = delete_node(@root, value)
 end
 ```
+
 #### `delete_node(tree_node, value)`
+
 We'll essentially reassign every node we traverse. Compare the value with the current node. If the node's value is not our target, assign the node's left or right child with a recursive call. Repeat until the target node is found, replace as necessary and return the replacement. Each evaluated node will be also be returned up the chain until we finally return the root.
 
 ```ruby
@@ -183,6 +192,7 @@ end
 ```
 
 #### `replace_node(tree_node)`
+
 This will handle the logic of actually replacing the node. If the node has children we have some extra steps to fulfill. Otherwise we return nil since there are no children needing promotion.
 
 ```ruby
@@ -226,8 +236,10 @@ def replace_node(tree_node)
   end
 end
 ```
+
 #### `parent_of_max(tree_node)`
-Find the parent of the node with the highest value. The parent's right child will be the maximum. Using this allows us to yank the maximum out, and reassign the parent's right to the maximum's left. The maximum's left may be nil or a node itself. Either way, we are repairing the broken link after pulling the max out. If we were to call this method on a node without a right child, nil is returned, indicating that the node *is* the maximum, so the parent is unknown.
+
+Find the parent of the node with the highest value. The parent's right child will be the maximum. Using this allows us to yank the maximum out, and reassign the parent's right to the maximum's left. The maximum's left may be nil or a node itself. Either way, we are repairing the broken link after pulling the max out. If we were to call this method on a node without a right child, nil is returned, indicating that the node _is_ the maximum, so the parent is unknown.
 
 ```ruby
 def parent_of_max(tree_node)
@@ -247,7 +259,9 @@ end
 Whew. Now that we have the fundamentals down, let's move on to some other useful functions to evaluate our binary search tree.
 
 #### Finding the depth
+
 Return the current max depth of the tree.
+
 ```ruby
 def depth(tree_node = @root)
   return 0 unless tree_node
@@ -256,8 +270,11 @@ def depth(tree_node = @root)
   left > right ? left : right
 end
 ```
+
 #### Checking for balance
+
 Determine if the tree's nodes are balanced.
+
 ```ruby
 def is_balanced?(tree_node = @root)
   check_balance(tree_node) >= 0
@@ -279,7 +296,9 @@ end
 ```
 
 #### Maximum and minimum
+
 Find the highest and lowest values
+
 ```ruby
 def maximum(tree_node = @root)
   tree_node.right ? maximum(tree_node.right) : tree_node
@@ -291,7 +310,9 @@ end
 ```
 
 #### Traversal methods
+
 Return an array with values in the specified order
+
 ```ruby
 def in_order(node = @root)
   return [] unless node
